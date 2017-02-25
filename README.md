@@ -29,10 +29,10 @@ At reset, the 8085 program counter goes to 0000H, but the entry point to the sys
 
 The complete memory addressing circuit is shown below.  This selects the RAM if the system is not in reset and A15 is low.  Otherwise it selects the ROM.  Neither is selected if IO/M is selecting IO.
 
-![Power-on Jump](docs/Power-onJump.png)
+![Power-on Jump](docs/reset-jump.png)
 Power-on jump is accomplished with a combination of hardware and software.  The hardware forces the ROM to be selected when in the reset state.  This condition is maintained until A15 goes high.  The software requires that first instruction in the ROM be a jump to a ROM location.  In this implementation, it is a jump to the beginning of the Monitor at F000.  Before the jump is executed, the processor's PC is at 0000, not 8000.  The jump causes the PC to go from 0000 to F000, raising the A15 line and clearing the reset flip flop.  From this point, ROM and RAM are addressed normally.
 
-![Reset Trace](docs/Reset-trace.png)
+![Reset Trace](docs/reset-trace.png)
 The image above shows the reset jump circuit in action, as captured by the excellent [Saleae Logic Analyzer](http://www.saleae.com).  The numbers shown above the Read line are a decode of address lines A0..A7.
 
 The trace begins with the processor in reset, which has caused the reset flip-flop's output (Reset FF Q) to go high.  As the processor comes out of reset (seen by Reset Out falling), ROMEN is asserted due to the Reset flip flop.  The first instruction read from ROM is a 3 byte jump instruction to F000.  The is read from the ROM at 8000, although the processor's PC is actually at 0000.  After the jump, A15 goes high, clearing the flip flop.  At this point, RAM and ROM are now addressed normally, using A15 low and high, respectively.
