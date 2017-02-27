@@ -1,10 +1,12 @@
 # Simple 8085 System
 This is a design for a simple 8085-based single-board computer.  It was started as a way to run the software from an old Netronics Explorer/85 board from the early 1980s.  The primary purpose of the design is software compatibility, rather than building a chip-for-chip clone of the Explorer.  Chips in this design, such as the 32K EEPROM, were not available when the Explorer was being produced.
 
+This project was inspired by the [Glitch Works 8085 SBC](http://www.glitchwrks.com/2011/10/29/sbc-rev-2) and the [Saundby MAG-85](http://saundby.com/electronics/8085/)
+
 ![Simple 8085 Schematic](docs/simple8085-sch.png)
 
 ## Explorer/85 Design
-The Explorer/85 was an S100 system designed around the Intel 8085 processor.  It was sold in kit form, with various options ranging from a simple processor trainer to a full-fledged computer with floppy drives and external expansion cards.
+The Explorer/85 was an S100 system designed around the Intel 8085 processor.  It was sold in kit form, with various options ranging from a simple processor trainer to a full-fledged computer with floppy drives and external expansion cards.  [This article and ad from Popular Electronics in 1981](docs/explorer85-popelec1081.pdf) have more details about the system.
 
 ![Netronics Explorer/85](docs/explorer85.jpg)
 The system being emulated here was a serial-terminal based Explorer with the following options:
@@ -13,7 +15,13 @@ The system being emulated here was a serial-terminal based Explorer with the fol
 * Level D - 4K memory expansion
 * Level E - 8K Microsoft Basic in ROM
 
-## Design and Additional Tools
+## Simple8085 Design
+The Simple8085 differs from the original hardware in a few key areas that required changes to the Monitor software:
+* The S85 has RAM from 0000 t0 7fff and ROM from 8000 to ffff.  The E85 has RAM at 0000 and ROM at F000, but it also has 256 bytes of RAM at F800 from the 8155 chip.  These area had to be moved to the top of the 0000 RAM in the Monitor code.
+* The E85 has timers and IO ports in the 8155 and 8355 that are used by the monitor to do single step.  The Monitor's initialization code for this hardware was removed.
+* The E85 has hardware support for RS232 via the SOD and SID pins.  Computers with RS232 serial ports are getting rare, so the S85 connects the SID and SOD pins to an FTDI board to convert the serial to USB instead.  This simplified the hardware and eliminated the need for the negative 8 volt supply used on the E85.  No software changes were needed for this.
+
+## Development and Additional Tools
 To get the original Netronics software running on a new platform, several additional tools were developed.  The complete project consisted of the following:
 * Create a software-compatible 8085  computer
 * Extract the contents of the original ROMs by booting the Explorer, using the Monitor to dump the ROMs, and capturing the terminal output.
@@ -78,4 +86,4 @@ At this point, the processor, ROM, and RAM had all been proven, at least for sim
 Given that the system is functioning on a breadboard, it may not ever be spun into a real PCB.  After all, the point was about getting it all working.  There are additional software modifications that may still happen, such as:
 * Replace the cassette interface code in the Monitor with XMODEM save and restore.  This would allow the state to be saved to a host computer.
 * Support on-board writing to the EEPROM so that the chip does not need to be pried out and replaced for each change to the system software.
-* Add addition languages and tools to the ROM.  Possibly Forth, Assembler, or an editor.
+* Add additionl languages and tools to the ROM.  Possibly Forth, Assembler, or an editor.
