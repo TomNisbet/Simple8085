@@ -27,7 +27,7 @@ To get the original Netronics software running on a new platform, several additi
 * Extract the contents of the original ROMs by booting the Explorer, using the Monitor to dump the ROMs, and capturing the terminal output.
 * The ROM content, plus the symbol table from the Monitor Source Listing, was fed into the [DASMx disassembler](http://myweb.tiscali.co.uk/pclare/DASMx/) to create a Monitor ROM source that could be modified to account for some small hardware differences between the two systems.
 * The modified Monitor was re-assembled with a [new cross assembler](https://github.com/TomNisbet/asm85) that was written for this project.
-* The new Monitor binary image and the original Basic ROM image were burned into the EEPROM using an Arduino-based EEPROM reader/writer that was created for this project.
+* The new Monitor binary image and the original Basic ROM image were burned into the EEPROM using an [Arduino-based EEPROM reader/writer](https://github.com/TomNisbet/TommyPROM) that was created for this project.
 
 ## Memory addressing and Power-on Jump
 The memory addressing hardware should be trivial.  With 32K ROM and 32K RAM, it could be as simple as running A15 to one chip select and inverted A15 to the other.  The complication arises from the reset condition.
