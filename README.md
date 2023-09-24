@@ -27,7 +27,7 @@ To get the original Netronics software running on a new platform, several additi
 * Extract the contents of the original ROMs by booting the Explorer, using the Monitor to dump the ROMs, and capturing the terminal output.
 * The ROM content, plus the symbol table from the Monitor Source Listing, was fed into the [DASMx disassembler](http://myweb.tiscali.co.uk/pclare/DASMx/) to create a Monitor ROM source that could be modified to account for some small hardware differences between the two systems.
 * The modified Monitor was re-assembled with a [new cross assembler](https://github.com/TomNisbet/asm85) that was written for this project.
-* The new Monitor binary image and the original Basic ROM image were burned into the EEPROM using an [TommyPROM - Arduino-based EEPROM reader/writer](https://github.com/TomNisbet/TommyPROM) that was created for this project.
+* The new Monitor binary image and the original Basic ROM image were burned into the EEPROM using [TommyPROM - an Arduino-based EEPROM reader/writer](https://github.com/TomNisbet/TommyPROM) that was created for this project.
 
 ## Memory addressing and Power-on Jump
 The memory addressing hardware should be trivial.  With 32K ROM and 32K RAM, it could be as simple as running _A15_ to the ROM Chip Enable and inverted _A15_ to the RAM Chip Enable.  The would put the ROM at 0000-7FFF and the RAM at 8000-FFFF.  The complication arises from the reset condition.
@@ -108,7 +108,7 @@ Also connect the following:
 Burn the [LED test program](code/led1.asm) into the EEPROM at starting address 0.  Note that this program starts with a _JMP_ instruction to clear the reset flip-flop.  This isn't needed, but means that the program will also work if the final address decoding hardware is installed.
 
 ### Step 3: Serial Communications
-The next test, with the same hardware, was to wire in the FTDI chip to the SOD and bit-bang a character out as async serial data.  The [Serial test program](code/led1.asm) writes a continuous stream of the 'T' character to the serial port.
+The next test, with the same hardware, was to wire in the FTDI chip to the SOD and bit-bang a character out as async serial data.  The [Serial test program](code/sertest.asm) writes a continuous stream of the 'T' character to the serial port.
 
 Note that this program uses timing loops that are dependent on the frequency of the clock crystal.  A different crystal would require different delay loop values.
 
