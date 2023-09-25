@@ -5,6 +5,9 @@ This project was inspired by the [Glitch Works 8085 SBC](http://www.glitchwrks.c
 
 ![Simple 8085 Schematic](docs/simple8085-sch.png)
 
+> [!WARNING]
+> Note that the schematic has an error - _READY_ should be tied to _5V_, not _GND_*
+
 ## Explorer/85 Design
 The Explorer/85 was an S100 system designed around the Intel 8085 processor.  It was sold in kit form, with various options ranging from a simple processor trainer to a full-fledged computer with floppy drives and external expansion cards.  [This article and ad from Popular Electronics in 1981](docs/explorer85-popelec1081.pdf) has more details about the system.
 
