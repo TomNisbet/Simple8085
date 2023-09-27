@@ -1,12 +1,14 @@
 ; Test program to bit-bang a single character out SOD as serial async data
+;
 ; This program does not use any RAM or stack instructions, so it can be run
-;   from a ROM-only system.
+; from a ROM-only system.
+;
 ; The BITTIME is calculated for a 6.144MHz processor clock.
 
         org     00000H
 
 BITTIME equ     0113h          ; Time delay for a single bit
-OUTBITS equ	00Bh
+OUTBITS equ	    00Bh
 
 START:
         mvi     c,'T'           ; Send a test character
