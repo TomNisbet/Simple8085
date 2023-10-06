@@ -20,7 +20,7 @@ The system being emulated here was a serial-terminal based Explorer with the fol
 
 ## Simple8085 Design
 The Simple8085 (S85) differs from the original Explorer/85 (E85) hardware in a few key areas that required changes to the Monitor software:
-* The S85 has RAM from 0000 t0 7fff and ROM from 8000 to ffff.  The E85 has RAM at 0000 and ROM at F000, but the E85 also has 256 bytes of RAM at F800 from the 8155 chip.  These area had to be moved to the top of the 0000 RAM in the S85 Monitor code.
+* The S85 has RAM from 0000 t0 7FFF and ROM from 8000 to FFFF.  The E85 has RAM at 0000 and ROM at F000, but the E85 also has 256 bytes of RAM at F800 from the 8155 chip.  These area had to be moved to the top of the 0000 RAM in the S85 Monitor code.
 * The E85 has timers and IO ports in the 8155 and 8355 that are used by the monitor to do single step.  The S85's Monitor initialization code for this hardware was removed.
 * The E85 has hardware support for RS232 via the SOD and SID pins.  Computers with RS232 serial ports are getting rare, so the S85 connects the SID and SOD pins to an FTDI board to convert the serial to USB instead.  This simplified the hardware and eliminated the need for the negative 8 volt supply used on the E85.  No software changes were needed for this.
 
@@ -102,7 +102,7 @@ To add the ROM to the 8085, make the following connections as in the final schem
 * EEPROM _A0..A7_ to the address latch outputs
 * data pins of the EEPROM to _AD0..7_
 * EEPROM _A8..14_ to the 8085 _A8..14_
-* EEPROM _RE_ to _RD_
+* EEPROM _OE_ to _RD_
 * EEPROM _WE_ to _5V_
 
 Also connect the following:
@@ -123,7 +123,6 @@ To add the RAM to the 8085, make the following connections as in the final schem
 * RAM _A0..A7_ to the address latch outputs
 * data pins of the RAM to _AD0..7_
 * RAM _A8..14_ to the 8085 _A8..14_
-* RAM _RE_ to _RD_
 * RAM _WE_ to _WR_
 
 Also connect the following:
