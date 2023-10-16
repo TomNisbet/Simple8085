@@ -106,12 +106,15 @@ Also connect the following:
 * 8085 _SOD_ to an LED and resistor to _GND_
 * EEPROM _CE_ to _GND_  (this maps the ROM base address at both 0000 and 8000)
 
-Burn the [LED test program](code/led1.asm) into the EEPROM at starting address 0.  Note that this program starts with a _JMP_ instruction to clear the reset flip-flop.  This isn't needed, but means that the program will also work if the final address decoding hardware is installed.
+Burn the [ROM LED test program](code/test1-rom-led.asm) into the EEPROM at starting address 0.  Note that this program starts with a _JMP_ instruction to clear the reset flip-flop.  This isn't needed, but means that the program will also work if the final address decoding hardware is installed.
 
 ### Step 3: Serial Communications
-The next test, with the same hardware, was to wire in the FTDI chip to the SOD and bit-bang a character out as async serial data.  The [Serial test program](code/sertest.asm) writes a continuous stream of the 'T' character to the serial port.
+The next test, with the same hardware, was to wire in the FTDI chip to the SOD and bit-bang a character out as async serial data.  The [ROM serial test program](code/test2-rom-serial.asm) writes a continuous stream of the 'T' character to the serial port.
 
-Note that this program uses timing loops that are dependent on the frequency of the clock crystal.  A different crystal would require different delay loop values.
+* remove the LED from SOD
+* connect an FTDI interface to SID and SOD as shownin the final schematic
+
+Note that this program uses timing loops that are dependent on the frequency of the clock crystal.  A different crystal would require different delay loop values.  The connected termnal should be set for 9600bps.
 
 ### Step 4: RAM
 The next test was to wire in the RAM chip and modify the test program to write some characters to RAM and read them back before outputting them as serial data.
@@ -120,11 +123,14 @@ To add the RAM to the 8085, make the following connections as in the final schem
 * RAM _A0..A7_ to the address latch outputs
 * data pins of the RAM to _AD0..7_
 * RAM _A8..14_ to the 8085 _A8..14_
+* RAM _OE_ to _RD_
 * RAM _WE_ to _WR_
 
 Also connect the following:
 * EEPROM _CE_ to 8085 _A15_ (this maps the ROM base address at 0000)
 * RAM _CE_ to *inverted* 8085 _A15_ (this maps the RAM base address at 8000)
+
+The [RAM serial test program](code/test3-ram-serial.asm) writes a continuous string of A to Z characters to the serial port.
 
 ### Step 5: Memory Addressing
 At this point, the processor, ROM, and RAM had all been proven, at least for simple operations.  The address decoding and power-on jump logic were then added to swap the RAM and ROM starting addresses, making them compatible with the Explorer/85.
