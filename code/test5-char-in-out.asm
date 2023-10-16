@@ -16,9 +16,11 @@ STACK       equ     SYSRAMST + 8EEH
             org     SYSROMST
 
 ; Constants for serial connunications at 9600 with a 6.144MHz crystal
+; The conected terminal should be set for 9600,N,8,1
 BITTIME     equ     275             ; Time delay for a single bit
 HALFBIT     equ     137             ; Time after start bit detected to read the middle of a bit
-OUTBITS     equ     11
+BITSOUT     equ     11              ; Serial bits to send
+BITSIN      equ     9               ; Serial bits to read + 1 (read 8 bits)
 
 ; Character constants
 LF          equ     00AH
@@ -66,40 +68,48 @@ CHARLOOP:
 ; outputs:  A - character from the console
 ; calls:    DELAY
 ; destroys: a,b,c,h,l
+;
+; Data consists of a zero stop bit, followed by the data sent LSB first,
+; followed by one or more ones as stop bits.  The stop bits are not actually
+; read, they just provide a guaranteed delay before the next character needs
+; to be read.  The line idles at logic level one, so when a zero is seen it 
+; is interpreted as the start bit of the next character.  A parity bit is not
+; expected or checked.
 ;*****************************************************************************
 CIN:
             di
             push    b
-            mvi     b,9         ; Number of bits to be read
-CI1:
-            rim
+            mvi     b,BITSIN        ; Loop count is number of bits to be read minus one
+CI1:                                ;   does not include stop bits
+            rim                     ; Wait for a zero indicating a start bit
             ora     a
             jm      CI1
-            lxi     h,HALFBIT
-CI2:
+            lxi     h,HALFBIT       ; delay a half bit time to get to the middle of the start bit
+CI2:                                
             dcr     l
             jnz     CI2
             dcr     h
             jnz     CI2
 CI3:
-            lxi     h,BITTIME
+            lxi     h,BITTIME       ; delay to the middle of the next data bit
 CI4:
             dcr     l
             jnz     CI4
             dcr     h
             jnz     CI4
-            rim
-            ral
-            dcr     b
+
+            rim                     ; read the next data bit
+            ral                     ; shift the data bit into the carry flag
+            dcr     b               ; exit if all of the bits have been read
             jz      CI5
-            mov     a,c
-            rar
-            mov     c,a
+            mov     a,c             ; character in progress into A
+            rar                     ; shift the data bit from carry into the MSB
+            mov     c,a             ; store the character back into C
             nop
-            jmp     CI3
+            jmp     CI3             ; get the next bit
 
 CI5:
-            mov     a,c
+            mov     a,c             ; return the character in A (and C)
             pop     b
             ei
             ret
@@ -114,11 +124,15 @@ CI5:
 ; destroys: a,f
 ;
 ; Sends a single character to the serial console.
+;
+; Data consists of a zero stop bit, followed by the data sent LSB first,
+; followed by one or more ones as stop bits.  No parity bit is calculated or
+; sent.
 ;*****************************************************************************
 COUT:
             di
             push    b
-            mvi     b,OUTBITS       ; Number of output bits
+            mvi     b,BITSOUT       ; Number of output bits
             xra     a               ; Clear carry for start bit
 CO1:
             mvi     a,080H          ; Set the SDE flag
