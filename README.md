@@ -104,9 +104,9 @@ The only parts needed for this are the 8085, clock crystal, and eight resistors 
 
 ### Step 2: ROM
 
-[![free run schematic](docs/step2-rom-led-sch-360.png)](docs/step2-rom-led-sch.png)
+[![free run schematic](docs/step2-rom-led-sch-360.png)](docs/step2-rom-led-sch.png)[![rom led build](docs/step2-rom-led-360.jpg)](docs/step2-rom-led.jpg)
 
-The next test was to wire in the address/data latch and to connect the EEPROM.  An initial test program was loaded that blinks an LED from the SOD line.  The RESET button and the associated power-on reset circuit were also added at this point.
+The next test was to wire in the address/data latch and to connect the EEPROM.  An initial test program was loaded that blinks an LED from the SOD line.  The RESET button was also added at this point.
 
 To add the ROM to the 8085, make the following connections as in the final schematic:
 
@@ -121,6 +121,7 @@ Also connect the following:
 
 * 8085 _SOD_ to an LED and resistor to _GND_
 * EEPROM _CE_ to _GND_  (this maps the ROM base address at both 0000 and 8000)
+* RESET_IN to +5V through a 10K resistor and also to GND through a pushbutton
 
 Burn the [ROM LED test program](code/test2a-rom-led.asm) into the EEPROM at starting address 0.  Note that this program starts with a _JMP_ instruction to clear the reset flip-flop.  This isn't needed, but means that the program will also work if the final address decoding hardware is installed.
 
@@ -128,10 +129,10 @@ If the test above suceedes, basic ROM wiring has been verified.  A [second test 
 
 ### Step 3: Serial Communications
 
-The next test, with the same hardware, was to wire in the FTDI chip to the SOD and bit-bang a character out as async serial data.  The [ROM serial test program](code/test3-rom-serial.asm) writes a continuous stream of the 'T' character to the serial port.
+The next test, with the same basic hardware, was to wire in the FTDI chip to the SOD and bit-bang a character out as async serial data.  The [ROM serial test program](code/test3-rom-serial.asm) writes a continuous stream of the 'T' character to the serial port.
 
 * remove the LED from SOD
-* connect an FTDI interface to SID and SOD as shownin the final schematic
+* connect an FTDI interface to SID and SOD as shown in the final schematic
 
 Note that this program uses timing loops that are dependent on the frequency of the clock crystal.  A different crystal would require different delay loop values.  The connected termnal should be set for 9600bps.
 
