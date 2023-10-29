@@ -74,11 +74,14 @@ f00c 00                     nop
 
 ## The Build
 
-![Simple 8085](docs/simple8085.jpg)
+[![Simple 8085](docs/simple8085-500.jpg)](docs/simple8085.jpg)
 
 Initially, the system was prototyped on a solderless breadboard in the hopes that some basic functionality could be proven before spinning a real PCB.  Starting with the 8085 chip, functionality was tested as new components were added.
 
 ### Step 1: Free-run Test
+
+[![free run schematic](docs/step1-free-run-sch-360.png)](docs/step1-free-run-sch.png)[![free run build](docs/step1-free-run-360.jpg)](docs/step1-free-run.jpg)
+
 The first test was to wire up the processor with pull-down resistors on the data lines, forcing it to read a NOP for every instruction read.  This cycles though the entire address range forever and proves the basic processor functionality.  If the test is working correctly, the _A15..A8_ address lines will all toggle, with _A14_ twice as fast as _A15_, _A13_ twice _A14_, and so on.  This can be observed with an oscilloscope or logic analyzer, or even an LED and resistor on the top address lines if a slower clock crystal is used.
 
 This test passed and produced a cool light show when LEDs were wired to the address lines.
@@ -92,6 +95,9 @@ The only parts needed for this are the 8085, clock crystal, and eight resistors 
 
 
 ### Step 2: ROM
+
+[![free run schematic](docs/step2-rom-led-sch-360.png)](docs/step1-rom-led-sch.png)
+
 The next test was to wire in the address/data latch and to connect the EEPROM.  An initial test program was loaded that blinks an LED from the SOD line.  The RESET button and the associated power-on reset circuit were also added at this point.
 
 To add the ROM to the 8085, make the following connections as in the final schematic:
@@ -106,10 +112,12 @@ Also connect the following:
 * 8085 _SOD_ to an LED and resistor to _GND_
 * EEPROM _CE_ to _GND_  (this maps the ROM base address at both 0000 and 8000)
 
-Burn the [ROM LED test program](code/test1-rom-led.asm) into the EEPROM at starting address 0.  Note that this program starts with a _JMP_ instruction to clear the reset flip-flop.  This isn't needed, but means that the program will also work if the final address decoding hardware is installed.
+Burn the [ROM LED test program](code/test2a-rom-led.asm) into the EEPROM at starting address 0.  Note that this program starts with a _JMP_ instruction to clear the reset flip-flop.  This isn't needed, but means that the program will also work if the final address decoding hardware is installed.
+
+If the test above suceedes, basic ROM wiring has been verified.  A [second test program]code/test2b-rom-address.asm) can now be run to verify that all of the upper ROM address lines have been connected correctly.  It will flash the LED at different speeds for a successful test or do a continuous fast blink on failure.
 
 ### Step 3: Serial Communications
-The next test, with the same hardware, was to wire in the FTDI chip to the SOD and bit-bang a character out as async serial data.  The [ROM serial test program](code/test2-rom-serial.asm) writes a continuous stream of the 'T' character to the serial port.
+The next test, with the same hardware, was to wire in the FTDI chip to the SOD and bit-bang a character out as async serial data.  The [ROM serial test program](code/test3-rom-serial.asm) writes a continuous stream of the 'T' character to the serial port.
 
 * remove the LED from SOD
 * connect an FTDI interface to SID and SOD as shownin the final schematic
@@ -130,7 +138,7 @@ Also connect the following:
 * EEPROM _CE_ to 8085 _A15_ (this maps the ROM base address at 0000)
 * RAM _CE_ to *inverted* 8085 _A15_ (this maps the RAM base address at 8000)
 
-The [RAM serial test program](code/test3-ram-serial.asm) writes a continuous string of A to Z characters to the serial port.
+The [RAM serial test program](code/test4-ram-serial.asm) writes a continuous string of A to Z characters to the serial port.
 
 ### Step 5: Memory Addressing
 At this point, the processor, ROM, and RAM had all been proven, at least for simple operations.  The address decoding and power-on jump logic were then added to swap the RAM and ROM starting addresses, making them compatible with the Explorer/85.

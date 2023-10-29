@@ -1,8 +1,8 @@
 ; Test program to illustrate serial character I/O using SID and SOD.
-; Prompts the user for a character and then prints a repeated string of that char.
+; Prompts for a character and then prints a repeated string of that character.
 ; Contains subroutines for character I/O and string output.
 
-; Can be run with the simple addressing of ROM at zeo and RAM at 8000 or
+; Can be run with the simple addressing of ROM at 0000 and RAM at 8000 or
 ; will also work with the final Simple8085 addressing circuit if SYSROMST 
 ; and SYSRAMST addresses are swapped.
 
@@ -16,10 +16,10 @@ STACK       equ     SYSRAMST + 8EEH
             org     SYSROMST
 
 ; Constants for serial connunications at 9600 with a 6.144MHz crystal
-; The conected terminal should be set for 9600,N,8,1
+; The connected terminal should be set for 9600,N,8,1
 BITTIME     equ     275             ; Time delay for a single bit
 HALFBIT     equ     137             ; Time after start bit detected to read the middle of a bit
-BITSOUT     equ     11              ; Serial bits to send
+BITSOUT     equ     11              ; Serial bits to send (start, 8 data, 2 stop)
 BITSIN      equ     9               ; Serial bits to read + 1 (read 8 bits)
 
 ; Character constants
@@ -133,10 +133,10 @@ COUT:
             di
             push    b
             mvi     b,BITSOUT       ; Number of output bits
-            xra     a               ; Clear carry for start bit
+            xra     a               ; Clear carry for a zero start bit
 CO1:
-            mvi     a,080H          ; Set the SDE flag
-            rar                     ; Shift carry into SOD flag
+            mvi     a,080H          ; Set the MSB to shift into the SDE flag
+            rar                     ; Shift one into SDE and carry into SOD flag
             cmc                     ; ??? This appears to be useless, carry is  set below
             sim                     ; Output start, data, or stop bit
             lxi     h,BITTIME       ; Load the time delay for one bit width
