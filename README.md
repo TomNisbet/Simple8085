@@ -1,4 +1,5 @@
 # Simple 8085 System
+
 This is a design for a simple 8085-based single-board computer.  It was started as a way to run the software from an old Netronics Explorer/85 board from the early 1980s.  The primary purpose of the design is software compatibility, rather than building a chip-for-chip clone of the Explorer.  Some chips in this design, such as the 32K EEPROM, were not available when the Explorer was being produced.
 
 This project was inspired by the [Glitch Works 8085 SBC](http://www.glitchwrks.com/2011/10/29/sbc-rev-2) and the [Saundby MAG-85](http://saundby.com/electronics/8085/)
@@ -6,23 +7,29 @@ This project was inspired by the [Glitch Works 8085 SBC](http://www.glitchwrks.c
 ![Simple 8085 Schematic](docs/simple8085-sch.png)
 
 ## Explorer/85 Design
+
 The Explorer/85 was an S100 system designed around the Intel 8085 processor.  It was sold in kit form, with various options ranging from a simple processor trainer to a full-fledged computer with floppy drives and external expansion cards.  [This article and ad from Popular Electronics in 1981](docs/explorer85-popelec1081.pdf) has more details about the system.
 
 ![Netronics Explorer/85](docs/explorer85.jpg)
 The system being emulated here was a serial-terminal based Explorer with the following options:
+
 * Level A - computer kit - terminal version with 256 bytes(!) of RAM and 2K Monitor ROM
 * Level B - S100 bus drivers and additional memory decoding
 * Level D - 4K memory expansion
 * Level E - 8K Microsoft Basic in ROM
 
 ## Simple8085 Design
+
 The Simple8085 (S85) differs from the original Explorer/85 (E85) hardware in a few key areas that required changes to the Monitor software:
+
 * The S85 has RAM from 0000 t0 7FFF and ROM from 8000 to FFFF.  The E85 has RAM at 0000 and ROM at F000, but the E85 also has 256 bytes of RAM at F800 from the 8155 chip.  These area had to be moved to the top of the 0000 RAM in the S85 Monitor code.
 * The E85 has timers and IO ports in the 8155 and 8355 that are used by the monitor to do single step.  The S85's Monitor initialization code for this hardware was removed.
 * The E85 has hardware support for RS232 via the SOD and SID pins.  Computers with RS232 serial ports are getting rare, so the S85 connects the SID and SOD pins to an FTDI board to convert the serial to USB instead.  This simplified the hardware and eliminated the need for the negative 8 volt supply used on the E85.  No software changes were needed for this.
 
 ## Development and Additional Tools
+
 To get the original Netronics software running on a new platform, several additional tools were developed.  The complete project consisted of the following:
+
 * Create a software-compatible 8085  computer
 * Extract the contents of the original ROMs by booting the Explorer, using the Monitor to dump the ROMs, and capturing the terminal output.
 * The ROM content, plus the symbol table from the Monitor Source Listing, was fed into the [DASMx disassembler](http://myweb.tiscali.co.uk/pclare/DASMx/) to create a Monitor ROM source that could be modified to account for some small hardware differences between the two systems.
@@ -30,6 +37,7 @@ To get the original Netronics software running on a new platform, several additi
 * The new Monitor binary image and the original Basic ROM image were burned into the EEPROM using [TommyPROM - an Arduino-based EEPROM reader/writer](https://github.com/TomNisbet/TommyPROM) that was created for this project.
 
 ## Memory addressing and reset-mode flip-flop
+
 The memory addressing hardware should be trivial.  With 32K ROM and 32K RAM, it could be as simple as running _A15_ to the ROM Chip Enable and inverted _A15_ to the RAM Chip Enable.  The would put the ROM at 0000-7FFF and the RAM at 8000-FFFF.  The complication arises from the reset condition.
 
 To be compatible with the original Explorer/85 and other CP/M systems, the RAM needs to start at 0000.  The difficulty with this is that at system reset, the 8085 program counter goes to 0000H to start executing code, but there won't be any code present in RAM at power up.  The Memory Addressing circuit compensates for this by forcing the ROM to be selected at RESET.  This makes the ROM appear twice in the address space, at 0000-7FFF and again from 8000-FFFF.  During the reset condition, the code normally in the ROM at address 8000 is read at address 0000.
@@ -87,20 +95,21 @@ The first test was to wire up the processor with pull-down resistors on the data
 This test passed and produced a cool light show when LEDs were wired to the address lines.
 
 The only parts needed for this are the 8085, clock crystal, and eight resistors for the _AD0..AD7_ lines.  
+
 * wire the _X1 and _X2_ to the crystal, as in the final schematic
 * connect each _ADn_ line to _GND_ though a 1K or similar resistor
 * connect _SID_, _HOLD_, _INTR_, _TRAP_, and the _RSTn_ lines to _GND_
 * connect _READY_ and _RESET_IN_ to _5V_
 * leave other signals unconnected, including _RD_, _WR_, _SOD_, and _ALE_
 
-
 ### Step 2: ROM
 
-[![free run schematic](docs/step2-rom-led-sch-360.png)](docs/step1-rom-led-sch.png)
+[![free run schematic](docs/step2-rom-led-sch-360.png)](docs/step2-rom-led-sch.png)
 
 The next test was to wire in the address/data latch and to connect the EEPROM.  An initial test program was loaded that blinks an LED from the SOD line.  The RESET button and the associated power-on reset circuit were also added at this point.
 
 To add the ROM to the 8085, make the following connections as in the final schematic:
+
 * 8-bit latch control and inputs to the _ALE_ and _AD0..7_ lines
 * EEPROM _A0..A7_ to the address latch outputs
 * data pins of the EEPROM to _AD0..7_
@@ -109,6 +118,7 @@ To add the ROM to the 8085, make the following connections as in the final schem
 * EEPROM _WE_ to _5V_
 
 Also connect the following:
+
 * 8085 _SOD_ to an LED and resistor to _GND_
 * EEPROM _CE_ to _GND_  (this maps the ROM base address at both 0000 and 8000)
 
@@ -117,6 +127,7 @@ Burn the [ROM LED test program](code/test2a-rom-led.asm) into the EEPROM at star
 If the test above suceedes, basic ROM wiring has been verified.  A [second test program]code/test2b-rom-address.asm) can now be run to verify that all of the upper ROM address lines have been connected correctly.  It will flash the LED at different speeds for a successful test or do a continuous fast blink on failure.
 
 ### Step 3: Serial Communications
+
 The next test, with the same hardware, was to wire in the FTDI chip to the SOD and bit-bang a character out as async serial data.  The [ROM serial test program](code/test3-rom-serial.asm) writes a continuous stream of the 'T' character to the serial port.
 
 * remove the LED from SOD
@@ -125,9 +136,11 @@ The next test, with the same hardware, was to wire in the FTDI chip to the SOD a
 Note that this program uses timing loops that are dependent on the frequency of the clock crystal.  A different crystal would require different delay loop values.  The connected termnal should be set for 9600bps.
 
 ### Step 4: RAM
+
 The next test was to wire in the RAM chip and modify the test program to write some characters to RAM and read them back before outputting them as serial data.
 
 To add the RAM to the 8085, make the following connections as in the final schematic:
+
 * RAM _A0..A7_ to the address latch outputs
 * data pins of the RAM to _AD0..7_
 * RAM _A8..14_ to the 8085 _A8..14_
@@ -135,19 +148,23 @@ To add the RAM to the 8085, make the following connections as in the final schem
 * RAM _WE_ to _WR_
 
 Also connect the following:
+
 * EEPROM _CE_ to 8085 _A15_ (this maps the ROM base address at 0000)
 * RAM _CE_ to *inverted* 8085 _A15_ (this maps the RAM base address at 8000)
 
 The [RAM serial test program](code/test4-ram-serial.asm) writes a continuous string of A to Z characters to the serial port.
 
 ### Step 5: Memory Addressing
+
 At this point, the processor, ROM, and RAM had all been proven, at least for simple operations.  The address decoding and power-on jump logic were then added to swap the RAM and ROM starting addresses, making them compatible with the Explorer/85.
 
 Rather than writing a new test, the entire Monitor ROM and Basic were loaded from the Explorer.  Incredibly enough, it worked.
 ![Simple 8085 Output](docs/s85-output.png)
 
 ## Next Steps
+
 Given that the system is functioning on a breadboard, it may not ever be spun into a real PCB.  After all, the point was about getting it all working.  There are additional software modifications that may still happen, such as:
+
 * Replace the cassette interface code in the Monitor with XMODEM save and restore.  This would allow the state to be saved to a host computer.
 * Support on-board writing to the EEPROM so that the chip does not need to be pried out and replaced for each change to the system software.
 * Add additional languages and tools to the ROM.  Possibly Forth, Assembler, or an editor.
