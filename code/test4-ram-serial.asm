@@ -1,4 +1,6 @@
 ; Test program to bit-bang characters out SOD as serial async data
+; assemble with: asm85 -b0000:00ff test4-ram-serial.asm
+
 ; The character to be sent is stored in RAM.
 ; The BITTIME is calculated for a 6.144MHz processor clock.
 

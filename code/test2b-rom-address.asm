@@ -1,5 +1,5 @@
 ; test2b-rom-address
-; assemle with: asm85 -b0000:7fff test2b-rom-address.asm
+; assemble with: asm85 -b0000:7fff test2b-rom-address.asm
 ;
 ; Test program for 8085 SBC.  Blinks an LED on SOD at different rates forever.
 ; This program does not use any RAM or stack instructions, so it can be run

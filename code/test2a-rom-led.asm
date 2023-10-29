@@ -1,5 +1,5 @@
 ; test2a-rom-led
-; assemle with: asm85 -b0000:00ff test2a-rom-led.asm
+; assemble with: asm85 -b0000:00ff test2a-rom-led.asm
 ;
 ; Test program for 8085 SBC.  Blinks an LED on SOD forever.
 ; This program does not use any RAM or stack instructions, so it can be run

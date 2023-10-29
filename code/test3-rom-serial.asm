@@ -1,4 +1,5 @@
 ; Test program to bit-bang a single character out SOD as serial async data
+; assemble with: asm85 -b0000:00ff test3-rom-serial.asm
 ;
 ; This program does not use any RAM or stack instructions, so it can be run
 ; from a ROM-only system.
