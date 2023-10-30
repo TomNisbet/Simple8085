@@ -1,0 +1,7 @@
+*.bak
+*.kicad_pcb-bak
+*.sch-bak
+*.zip
+scratch/
+archive/
+.DS_Store

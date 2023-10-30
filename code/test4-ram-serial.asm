@@ -8,7 +8,7 @@
 ; and RAM OE is inverted A15.  This puts ROM at 0000H and RAM at 8000H.
 
 ; This can also be run on the final hardware that has RAM at 0000H and ROM at 8000H.
-; The SYSROMST and SYSRAMST must be changed to accomodate this.
+; The SYSROMST and SYSRAMST must be changed to accommodate this.
 ; Note the first jump that seems to do nothing, but it clears the Reset-mode flip-flip.
 ; The ROM is normally at 8000 and the RAM at 0000.  At reset, the ROM maps to
 ; both 0000 and 8000.  This condition persists until the A15 line goes high.
@@ -58,7 +58,7 @@ CO2:
             jnz     CO1             ; Send next bit
             ei
 
-            lxi     h,03fffH        ; Wait a while before sending the character again
+            lxi     h,1000H         ; Wait a while before sending the character again
 CHILL:
             dcr     l
             jnz     CHILL
