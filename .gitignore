@@ -4,4 +4,6 @@
 *.zip
 scratch/
 archive/
+code/asm85
+code/asm85.exe
 .DS_Store
