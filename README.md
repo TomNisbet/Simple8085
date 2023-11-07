@@ -161,6 +161,8 @@ Also connect the following:
 
 The [RAM serial test program](code/test4-ram-serial.asm) writes a continuous string of A to Z characters to the serial port.
 
+Now that RAM is working, code development can be sped up with the use of the [Hex Loader](code/loader.asm). This can be burned into the ROM and will load and execute programs from RAM.  While not as powerful as a full monitor, it does remove the need to power down the system and remove the ROM for each code update.  It accepts Intel Hex files from [asm85](https://github.com/TomNisbet/asm85) or other tools that write in the standard format.
+
 ### Step 5: Memory Addressing
 
 At this point, the processor, ROM, and RAM had all been proven, at least for simple operations.  The address decoding and power-on jump logic were then added to swap the RAM and ROM starting addresses, making them compatible with the Explorer/85.
