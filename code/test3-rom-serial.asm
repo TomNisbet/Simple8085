@@ -8,13 +8,9 @@
 
         org     00000H
 
-; 270 = 11.416
-; 271 = 10.839
-; 273 = 9.844
-; 260 = 24???
-BITTIME equ     275             ; Time delay for a single bit 6.144MHz clock
-;BITTIME equ     273             ; Time delay for a single bit 6.000MHz clock
-OUTBITS equ	11              ; Serial bits to send (start, 8 data, 2 stop)
+BITTIME equ     0113H           ; 6.144 time delay for a single bit
+;BITTIME equ     0112H           ; 6.000 time delay for a single bit
+OUTBITS equ	    11              ; Serial bits to send (start, 8 data, 2 stop)
 
 START:
         mvi     c,'T'           ; Send a test character

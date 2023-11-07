@@ -26,7 +26,8 @@ CHRMEM      equ     SYSRAMST + 100H
 
             org     SYSROMST
 
-BITTIME     equ     275             ; Time delay for a single bit
+BITTIME equ     0113H           ; 6.144 time delay for a single bit
+;BITTIME equ     0112H           ; 6.000 time delay for a single bit
 OUTBITS     equ     11
 
             jmp     START           ; jump to a rom address to clear reset-mode Flip-flop

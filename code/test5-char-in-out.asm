@@ -3,22 +3,24 @@
 ; Contains subroutines for character I/O and string output.
 
 ; Can be run with the simple addressing of ROM at 0000 and RAM at 8000 or
-; will also work with the final Simple8085 addressing circuit if SYSROMST 
+; will also work with the final Simple8085 addressing circuit if SYSROMST
 ; and SYSRAMST addresses are swapped.
 
-SYSROMST    equ     0000H
-SYSRAMST    equ     8000H
+SYSROMST    equ     8000H
+SYSRAMST    equ     0000H
 
 ; The stack starts at a random-ish address that will show on the low eight
 ; address bits when monitoring with a logic analyzer.
-STACK       equ     SYSRAMST + 8EEH 
+STACK       equ     SYSRAMST + 2EEEH
 
             org     SYSROMST
 
-; Constants for serial connunications at 9600 with a 6.144MHz crystal
+; Constants for serial communications at 9600 with a 6.144MHz crystal
 ; The connected terminal should be set for 9600,N,8,1
-BITTIME     equ     275             ; Time delay for a single bit
-HALFBIT     equ     137             ; Time after start bit detected to read the middle of a bit
+BITTIME     equ     0113H           ; 6.144 time delay for a single bit
+HALFBIT     equ     010AH           ; 6.144 time after start bit detected to read the middle of a bit
+;BITTIME     equ     0112H           ; 6.000 time delay for a single bit
+;HALFBIT     equ     0109H           ; 6.000 time after start bit detected to read the middle of a bit
 BITSOUT     equ     11              ; Serial bits to send (start, 8 data, 2 stop)
 BITSIN      equ     9               ; Serial bits to read + 1 (read 8 bits)
 
@@ -27,13 +29,15 @@ LF          equ     00AH
 CR          equ     00Dh
 ESC         equ     01Bh
 
-                                  
+
             jmp     START           ; jump over the ROM data definitions but also
                                     ; jump to a rom address to clear reset-mode Flip-flop
 PROMPT:     db      "Enter a character to be printed",CR,LF,0
 
 
 START:
+            mvi     a,0C0H          ; Set serial out to logic 1 (serial line idle)
+            sim
             lxi     h,STACK         ; Initialize the stack pointer
             sphl
 
@@ -42,7 +46,7 @@ DOTEST:
             call    PUTS
 TESTLOOP:
             call    CIN             ; get a character
-            mov     d,c             ; save the char
+            mov     d,a             ; save the char
             mvi     e,20            ; number of times to repeat char
 CHARLOOP:
             call    COUT            ; print the inputted char
@@ -56,7 +60,7 @@ CHARLOOP:
             call    COUT
             lxi     h,10000         ; delay a short moment
             call    DELAY
-            jmp     CHARLOOP        ; get another character to print  
+            jmp     CHARLOOP        ; get another character to print
 
 
 
@@ -67,12 +71,12 @@ CHARLOOP:
 ; inputs:   none
 ; outputs:  A - character from the console
 ; calls:    DELAY
-; destroys: a,b,c,h,l
+; destroys: a,f,b,c,h,l
 ;
 ; Data consists of a zero stop bit, followed by the data sent LSB first,
 ; followed by one or more ones as stop bits.  The stop bits are not actually
 ; read, they just provide a guaranteed delay before the next character needs
-; to be read.  The line idles at logic level one, so when a zero is seen it 
+; to be read.  The line idles at logic level one, so when a zero is seen it
 ; is interpreted as the start bit of the next character.  A parity bit is not
 ; expected or checked.
 ;*****************************************************************************
@@ -85,7 +89,7 @@ CI1:                                ;   does not include stop bits
             ora     a
             jm      CI1
             lxi     h,HALFBIT       ; delay a half bit time to get to the middle of the start bit
-CI2:                                
+CI2:
             dcr     l
             jnz     CI2
             dcr     h
@@ -109,7 +113,8 @@ CI4:
             jmp     CI3             ; get the next bit
 
 CI5:
-            mov     a,c             ; return the character in A (and C)
+            mov     a,c             ; return the character in A
+            out     0FAH            ; DEBUG: output the char value for the logic analyzer
             pop     b
             ei
             ret
@@ -131,6 +136,7 @@ CI5:
 ;*****************************************************************************
 COUT:
             di
+            push    h
             push    b
             mvi     b,BITSOUT       ; Number of output bits
             xra     a               ; Clear carry for a zero start bit
@@ -152,6 +158,7 @@ CO2:
             dcr     b
             jnz     CO1             ; Send next bit
             pop     b
+            pop     h
             ei
             ret
 
@@ -159,9 +166,10 @@ CO2:
 ; PUTS - Print a zero-terminated string to the console
 
 ; inputs:   C - character to output
-; outputs:  HL - points to zero-terminated string
+; inputs :  HL - points to zero-terminated string
+; outputs:  none
 ; calls:    COUT
-; destroys: a,b,c,h,l
+; destroys: a,f,c,h,l
 ;*****************************************************************************
 PUTS:
             mov     a,m             ; Get char
@@ -179,7 +187,7 @@ PUTS:
 ; inputs:   HL - loop count
 ; outputs:  none
 ; calls:    none
-; destroys: h,l
+; destroys: f,h,l
 ;*****************************************************************************
 DELAY:
             dcr     l
