@@ -53,7 +53,7 @@ Reset-mode addressing is accomplished with a combination of hardware and softwar
 The image above shows the reset jump circuit in action, as captured by the excellent [Saleae Logic Analyzer](http://www.saleae.com).  The numbers shown above the Read line are a decode of address lines A0..A7.
 
 > [!NOTE]
-> See the [Logic Analyzer](docs/logic-analyzer.md) page for notes on debugging with a Logic Analyzer.
+> See the [Logic Analyzer](Simple8085/docs/logic-analyzer.md) page for notes on debugging with a Logic Analyzer.
 
 The trace begins with the processor in reset, which has caused the reset flip-flop's output (Reset FF Q) to go high.  As the processor comes out of reset (seen by Reset Out falling), _ROMEN_ is asserted due to the Reset flip flop.  The first instruction read from ROM is a 3 byte jump instruction to F000.  This is read from the beginning of the ROM, which would normally be at address 8000, although the processor's PC is actually at 0000.  After the jump, _A15_ goes high, clearing the flip flop.  At this point, RAM and ROM are now addressed normally, using _A15_ low and high, respectively.
 
