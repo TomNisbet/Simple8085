@@ -54,7 +54,12 @@ A third analyzer triggered on the rising edge of the _WR_ signal will show the v
 > [!IMPORTANT]  
 > On computers without sufficient processing power, the Logic may have difficulty capturing data when multiple analyzers are configured.  If this happens, remove the analyzers, capture the data, and then add the analyzers back in to view the data.  Presets can be used to save the different configurations.
 
-The screenshot below shows the output of three Simple Parallel Analyzers.  All are monitoring the _AD0..AD7_ lines and clocking on the _ALE_, _RD_, and _WR_ lines.  The processor is coming out of RESET.  On the _ALE_ line, the first three addresses are shown with the low address bytes reading 00, 01, and 02.  The _RD_ line shows that the three data bytes fetched are C3, 25, 80, which is a JMP 8025 instruction.  The next address read has 25 as the lowest address byte and the A15 line is now high, showing that the processor has jumped to 8025 and is fetching the next instruction.
+The screenshot below shows the output of three Simple Parallel Analyzers.  All are monitoring the _AD0..AD7_ lines and clocking on the _ALE_, _RD_, and _WR_ lines.  
+
+* The processor is coming out of RESET.  
+* On the _ALE_ line, the first three addresses are shown with the low address bytes reading 00, 01, and 02.  
+* The _RD_ line shows that the three data bytes fetched are C3, 25, 80, which is a JMP 8025 instruction.  
+* The next address read has 25 as the lowest address byte and the A15 line is now high, showing that the processor has jumped to 8025 and is fetching the next instruction.
 
 [![Logic Analyzers Setup](logic-analyzers-500.png)](logic-analyzers.png)
 
