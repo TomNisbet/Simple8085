@@ -53,8 +53,8 @@ A third analyzer triggered on the rising edge of the _WR_ signal will show the v
 
 The screenshot below shows the output of three Simple Parallel Analyzers monitoring the data lines and clocking on the _ALE_, _RD_, and _WR_ lines.
 
-[!IMPORTANT]  
-On computers without sufficent processing power, the Logic may have difficulty capturing data when multiple analyzers are configured.  If this happens, remove the analyzers, capture the data, and then add the analyzers back in to view the data.  Presets can be used to save the different configurations.
+> [!IMPORTANT]  
+> On computers without sufficent processing power, the Logic may have difficulty capturing data when multiple analyzers are configured.  If this happens, remove the analyzers, capture the data, and then add the analyzers back in to view the data.  Presets can be used to save the different configurations.
 
 [![Logic Analyzers Setup](logic-analyzers-500.png)](logic-analyzers.png)
 
