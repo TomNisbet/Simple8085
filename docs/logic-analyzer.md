@@ -31,7 +31,7 @@ The above signals use 13 of the 16 available lines.  Depending on the issue bein
 
 |Signal     | Description |
 |:---       |:---|
-| SID, SOD  | monitor serial comunications or other I/O |
+| SID, SOD  | monitor serial communications or other I/O |
 | CLK       | useful in early board turn up and to count machine cycles |
 | S0, S1    | monitor instruction cycles |
 | IO/M      | differentiate between memory and I/O operations |
@@ -49,7 +49,7 @@ A Simple Parallel Analyzer on AD0..AD7, triggered on the falling edge of _ALE_, 
 
 A second analyzer triggered on the rising edge of the _RD_ signal will show the value on the data bus during a read operation.
 
-A third analyzer triggered on the rising edge of the _WR_ signal will show the value on the bus during a write operation.
+A third analyzer triggered on the rising edge of the _WR_ signal will show the value on the data bus during a write operation.
 
 > [!IMPORTANT]  
 > On computers without sufficient processing power, the Logic may have difficulty capturing data when multiple analyzers are configured.  If this happens, remove the analyzers, capture the data, and then add the analyzers back in to view the data.  Presets can be used to save the different configurations.
@@ -63,11 +63,11 @@ The screenshot below shows the output of three Simple Parallel Analyzers.  All a
 
 [![Logic Analyzers Setup](logic-analyzers-500.png)](logic-analyzers.png)
 
-The Async Serial Analyzer is also useful for 8085 debugging.  Configuring this on the SID or SOD line provides a decode of the characters sent on the serial line and verifies correct protocol framing.  This is much easier than just reading the bit tranitions on the line.
+The Async Serial Analyzer is also useful for 8085 debugging.  Configuring this on the SID or SOD line provides a decode of the characters sent on the serial line and verifies correct protocol framing.  This is much easier than just reading the bit transitions on the line.
 
 ## Logic Analyzer Triggers
 
-A capture on the Logic Analyzer can be triggered on a specific event.  One good example is triggering the capture on the falling edge of _RES_OUT_.  This will capture data starting at the point where the processor comes out or the RESET condition.
+A capture on the Logic Analyzer can be triggered on a specific event.  One good example is triggering the capture on the falling edge of _RES_OUT_.  This will capture data starting at the point where the processor comes out of the RESET condition.
 
 Another good trigger is the falling edge of one of the serial data lines.  This detects an async start bit, so it will capture the beginning of a serial data transmission.
 
