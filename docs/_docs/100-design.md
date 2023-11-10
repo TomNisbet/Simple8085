@@ -1,6 +1,6 @@
 ---
 title: "Simple 8085 Computer Design"
-permalink: /design
+permalink: /docs/design
 excerpt: "Design of the Simple 8085 Computer"
 ---
 

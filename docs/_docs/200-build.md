@@ -45,7 +45,7 @@ Also connect the following:
 * EEPROM _CE_ to _GND_  (this maps the ROM base address at both 0000 and 8000)
 * _RESET_IN_ to _+5V_ through a 10K resistor and also to _GND_ through a pushbutton
 
-Burn the [ROM LED test program](code/test2a-rom-led.asm) into the EEPROM at starting address 0.  Note that this program starts with a _JMP_ instruction to clear the reset flip-flop.  This isn't needed, but means that the program will also work if the final address decoding hardware is installed.
+Burn the [ROM LED test program](code/test2a-rom-led.asm) into the EEPROM at starting address 0000H.  Note that this program starts with a _JMP_ instruction to clear the reset flip-flop.  This isn't needed, but means that the program will also work if the final address decoding hardware is installed.
 
 If the test above suceedes, basic ROM wiring has been verified.  A [second test program](code/test2b-rom-address.asm) can now be run to verify that all of the upper ROM address lines have been connected correctly.  It will flash the LED at different speeds for a successful test or do a continuous fast blink on failure.
 
