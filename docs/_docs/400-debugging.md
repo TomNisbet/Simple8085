@@ -55,8 +55,8 @@ A second analyzer triggered on the rising edge of the _RD_ signal will show the 
 
 A third analyzer triggered on the rising edge of the _WR_ signal will show the value on the data bus during a write operation.
 
-> [!IMPORTANT]  
-> On computers without sufficient processing power, the Logic may have difficulty capturing data when multiple analyzers are configured.  If this happens, remove the analyzers, capture the data, and then add the analyzers back in to view the data.  Presets can be used to save the different configurations.
+{% include important.html content="On computers without sufficient processing power, the Logic may have difficulty capturing data when multiple analyzers are configured.  If this happens, remove the analyzers, capture the data, and then add the analyzers back in to view the data.  Presets can be used to save the different configurations." %}
+
 
 The screenshot below shows the output of three Simple Parallel Analyzers.  All are monitoring the _AD0..AD7_ lines and clocking on the _ALE_, _RD_, and _WR_ lines.  
 
