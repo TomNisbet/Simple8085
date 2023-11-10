@@ -1,6 +1,6 @@
 ---
 title: "Simple 8085 Computer Design"
-permalink: /docs/design
+permalink: /design
 excerpt: "Design of the Simple 8085 Computer"
 ---
 
@@ -44,13 +44,13 @@ The complete memory addressing circuit is shown below.  Normally, the RAM (0000-
 
 Note that the inverters used in the memory addressing circuit are 74LS14 Schmitt-trigger inverters.  This is simply because there were two inverters left over from the power-on reset circuit.  Standard inverters would work equally well here.
 
-![Reset-mode adressing](docs/images/reset-jump.png)
+![Reset-mode adressing](images/reset-jump.png)
 Reset-mode addressing is accomplished with a combination of hardware and software.  The hardware forces the ROM to be selected when in the RESET state.  This condition is maintained until _A15_ goes high.  The software requires that first instruction in the ROM be a jump to a ROM location.  In this implementation, it is a jump to the beginning of the Monitor at F000.  Before the jump is executed, the processor's PC is at 0000, but is executing code that is assembled to start at 8000.  The jump causes the PC to go from 0000 to F000, raising the A15 line and clearing the reset flip flop.  From this point, ROM and RAM are addressed normally, with RAM starting at 0000 and ROM at 8000.
 
-![Reset Trace](docs/images/reset-trace.png)
+![Reset Trace](images/reset-trace.png)
 The image above shows the reset jump circuit in action, as captured by the excellent [Saleae Logic Analyzer](http://www.saleae.com).  The numbers shown above the Read line are a decode of address lines A0..A7.
 
-> :page_facing_up: The [Debugging page](docs/debugging) has notes on debugging with a logic analyzer
+The [Debugging page](docs/debugging) has notes on debugging with a logic analyzer.
 
 The trace begins with the processor in reset, which has caused the reset flip-flop's output (Reset FF Q) to go high.  As the processor comes out of reset (seen by Reset Out falling), _ROMEN_ is asserted due to the Reset flip flop.  The first instruction read from ROM is a 3 byte jump instruction to F000.  This is read from the beginning of the ROM, which would normally be at address 8000, although the processor's PC is actually at 0000.  After the jump, _A15_ goes high, clearing the flip flop.  At this point, RAM and ROM are now addressed normally, using _A15_ low and high, respectively.
 

@@ -4,13 +4,13 @@ permalink: /docs/build
 excerpt: "Simple 8085 build steps"
 ---
 
-[![Simple 8085](docs/images/simple8085-500.jpg)](docs/images/simple8085.jpg)
+[![Simple 8085](images/simple8085-500.jpg)](images/simple8085.jpg)
 
 Initially, the system was prototyped on a solderless breadboard in the hopes that some basic functionality could be proven before spinning a real PCB.  Starting with the 8085 chip, functionality was tested as new components were added.
 
 ### Step 1: Free-run Test
 
-[![free run schematic](docs/images/step1-free-run-sch-360.png)](docs/images/step1-free-run-sch.png)[![free run build](docs/images/step1-free-run-360.jpg)](docs/images/step1-free-run.jpg)
+[![free run schematic](images/step1-free-run-sch-360.png)](images/step1-free-run-sch.png)[![free run build](images/step1-free-run-360.jpg)](images/step1-free-run.jpg)
 
 The first test was to wire up the processor with pull-down resistors on the data lines, forcing it to read a NOP for every instruction read.  This cycles though the entire address range forever and proves the basic processor functionality.  If the test is working correctly, the _A15..A8_ address lines will all toggle, with _A14_ twice as fast as _A15_, _A13_ twice _A14_, and so on.  This can be observed with an oscilloscope or logic analyzer, or even an LED and resistor on the top address lines if a slower clock crystal is used.
 
@@ -26,7 +26,7 @@ The only parts needed for this are the 8085, clock crystal, and eight resistors 
 
 ### Step 2: ROM
 
-[![rom led schematic](docs/images/step2-rom-led-sch-360.png)](docs/images/step2-rom-led-sch.png)[![rom led build](docs/images/step2-rom-led-360.jpg)](docs/images/step2-rom-led.jpg)
+[![rom led schematic](images/step2-rom-led-sch-360.png)](images/step2-rom-led-sch.png)[![rom led build](images/step2-rom-led-360.jpg)](images/step2-rom-led.jpg)
 
 The next test was to wire in the address/data latch and to connect the EEPROM.  An initial test program was loaded that blinks an LED from the SOD line.  The RESET button was also added at this point.
 
@@ -51,7 +51,7 @@ If the test above suceedes, basic ROM wiring has been verified.  A [second test 
 
 ### Step 3: Serial Communications
 
-[![rom serial schematic](docs/images/step3-rom-serial-sch-360.png)](docs/images/step3-rom-serial-sch.png)[![rom serial build](docs/images/step3-rom-serial-360.jpg)](docs/images/step3-rom-serial.jpg)
+[![rom serial schematic](images/step3-rom-serial-sch-360.png)](images/step3-rom-serial-sch.png)[![rom serial build](images/step3-rom-serial-360.jpg)](images/step3-rom-serial.jpg)
 
 The next test, with the same basic hardware, was to wire in the FTDI chip to the SOD and bit-bang a character out as async serial data.  The [ROM serial test program](code/test3-rom-serial.asm) writes a continuous stream of the 'T' character to the serial port.
 
@@ -61,7 +61,7 @@ Note that this program uses timing loops that are dependent on the frequency of 
 
 ### Step 4: RAM
 
-[![ram serial schematic](docs/images/step4-ram-serial-sch-360.png)](docs/images/step4-ram-serial-sch.png)[![rom serial build](docs/images/step4-ram-serial-360.jpg)](docs/images/step4-ram-serial.jpg)
+[![ram serial schematic](images/step4-ram-serial-sch-360.png)](images/step4-ram-serial-sch.png)[![rom serial build](images/step4-ram-serial-360.jpg)](images/step4-ram-serial.jpg)
 
 The next test was to wire in the RAM chip and modify the test program to write some characters to RAM and read them back before outputting them as serial data.  The reset circuit was also expanded to include the power-on reset in addition to the existing button.
 
@@ -87,10 +87,10 @@ Now that RAM is working, code development can be sped up with the use of the [He
 
 ### Step 5: Memory Addressing
 
-[![rom serial build](docs/images/step5-addressing-360.jpg)](docs/images/step5-addressing.jpg)
+[![rom serial build](images/step5-addressing-360.jpg)](images/step5-addressing.jpg)
 
 At this point, the processor, ROM, and RAM had all been proven, at least for simple operations.  The address decoding and power-on jump logic were then added to swap the RAM and ROM starting addresses, making them compatible with the Explorer/85.
 
 Rather than writing a new test, the entire Monitor ROM and Basic were loaded from the Explorer.  Incredibly enough, it worked.
-![Simple 8085 Output](docs/images/s85-output.png)
+![Simple 8085 Output](images/s85-output.png)
 
