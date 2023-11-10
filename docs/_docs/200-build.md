@@ -1,6 +1,6 @@
 ---
 title: "Building the Simple 8085 Computer"
-permalink: /build
+permalink: /docs/build
 excerpt: "Simple 8085 build steps"
 ---
 
