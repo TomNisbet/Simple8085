@@ -1,0 +1,15 @@
+# main links
+docs:
+  - title: "Introduction"
+    url: /
+  - title: "Design"
+    url: /docs/design
+  - title: "Build Steps"
+    url: /docs/build
+  - title: "Sample Code"
+    url: /docs/code
+  - title: "Debugging"
+    url: docs/debugging  
+  - title: "Source Code and Schematics"
+    url: "https://github.com/TomNisbet/Simple8085"
+
