@@ -56,7 +56,7 @@ The trace begins with the processor in reset, which has caused the reset flip-fl
 
 The code fragment below matches the logic analyzer trace.  After the last part of the STA instruction is fetched at F00B, the trace shows the write to RAM at 7F78.
 
-```assembly
+```asm
                     SYSRAMST   equ 00000h
                     SYSROMST   equ 08000h
 
