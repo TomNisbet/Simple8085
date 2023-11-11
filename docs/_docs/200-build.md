@@ -45,15 +45,15 @@ Also connect the following:
 * EEPROM _CE_ to _GND_  (this maps the ROM base address at both 0000 and 8000)
 * _RESET_IN_ to _+5V_ through a 10K resistor and also to _GND_ through a pushbutton
 
-Burn the [ROM LED test program](/docs/code#test2a-rom-ledasm) into the EEPROM at starting address 0000H.  Note that this program starts with a _JMP_ instruction to clear the reset flip-flop.  This isn't needed, but means that the program will also work if the final address decoding hardware is installed.
+Burn the [ROM LED test program](code#test2a-rom-ledasm) into the EEPROM at starting address 0000H.  Note that this program starts with a _JMP_ instruction to clear the reset flip-flop.  This isn't needed, but means that the program will also work if the final address decoding hardware is installed.
 
-If the test above suceedes, basic ROM wiring has been verified.  A [second test program](/docs/code#test2b-rom-addressasm) can now be run to verify that all of the upper ROM address lines have been connected correctly.  It will flash the LED at different speeds for a successful test or do a continuous fast blink on failure.
+If the test above suceedes, basic ROM wiring has been verified.  A [second test program](code#test2b-rom-addressasm) can now be run to verify that all of the upper ROM address lines have been connected correctly.  It will flash the LED at different speeds for a successful test or do a continuous fast blink on failure.
 
 ### Step 3: Serial Communications
 
 [![rom serial schematic](images/step3-rom-serial-sch-360.png)](images/step3-rom-serial-sch.png)[![rom serial build](images/step3-rom-serial-360.jpg)](images/step3-rom-serial.jpg)
 
-The next test, with the same basic hardware, was to wire in the FTDI chip to the SOD and bit-bang a character out as async serial data.  The [ROM serial test program](/docs/code#test3-rom-serialasm) writes a continuous stream of the 'T' character to the serial port.
+The next test, with the same basic hardware, was to wire in the FTDI chip to the SOD and bit-bang a character out as async serial data.  The [ROM serial test program](code#test3-rom-serialasm) writes a continuous stream of the 'T' character to the serial port.
 
 * connect an FTDI interface to _GND_, _SID_ and _SOD_ as shown in the final schematic
 
@@ -81,9 +81,9 @@ Also connect the following:
 * RAM _CE_ to *inverted* 8085 _A15_ (this maps the RAM base address at 8000)
 * complete the reset circuit with the addition of the inverters, capacitor, and diode
 
-The [RAM serial test program](/docs/code#test2a-rom-ledasm) writes a continuous string of A to Z characters to the serial port.
+The [RAM serial test program](code#test2a-rom-ledasm) writes a continuous string of A to Z characters to the serial port.
 
-Now that RAM is working, code development can be sped up with the use of the [Hex Loader](/docs/code#loaderasm). This can be burned into the ROM and will load and execute programs from RAM.  While not as powerful as a full monitor, it does remove the need to power down the system and remove the ROM for each code update.  It accepts Intel Hex files from [asm85](https://github.com/TomNisbet/asm85) or other tools that write in the standard format.
+Now that RAM is working, code development can be sped up with the use of the [Hex Loader](code#loaderasm). This can be burned into the ROM and will load and execute programs from RAM.  While not as powerful as a full monitor, it does remove the need to power down the system and remove the ROM for each code update.  It accepts Intel Hex files from [asm85](https://github.com/TomNisbet/asm85) or other tools that write in the standard format.
 
 ### Step 5: Memory Addressing
 
