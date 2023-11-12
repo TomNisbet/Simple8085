@@ -10,6 +10,15 @@ This project was inspired by the [Glitch Works 8085 SBC](http://www.glitchwrks.c
 
 [![Simple 8085 Schematic](docs/images/step5-addressing-sch-800.png)](docs/images/step5-addressing-sch.png)
 
+## Development and Additional Tools
+
+To get the original Netronics software running on a new platform, several additional tools were developed.  The complete project consisted of the following:
+
+* Create a software-compatible 8085 computer
+* Extract the contents of the original ROMs by booting the Explorer, using the Monitor to dump the ROMs, and capturing the terminal output
+* The ROM content, plus the symbol table from the Monitor Source Listing, was fed into the [DASMx disassembler](http://myweb.tiscali.co.uk/pclare/DASMx/) to create a Monitor ROM source that could be modified to account for some small hardware differences between the two systems
+* The modified Monitor was re-assembled with a [new cross assembler](https://github.com/TomNisbet/asm85) that was written for this project
+* The new Monitor binary image and the original Basic ROM image were burned into the EEPROM using [TommyPROM - an Arduino-based EEPROM reader/writer](https://github.com/TomNisbet/TommyPROM) that was created for this project
 
 ## Next Steps
 
