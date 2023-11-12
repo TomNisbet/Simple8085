@@ -4,11 +4,13 @@ permalink: /docs/build
 excerpt: "Simple 8085 build steps"
 ---
 
-[![Simple 8085](images/simple8085-500.jpg)](images/simple8085.jpg)
+[![Simple 8085](images/simple8085-360.jpg)](images/simple8085.jpg) [![Simple 8085](images/step5-addressing-360.jpg)](images/step5-addressing.jpg)
 
 Initially, the system was prototyped on a solderless breadboard in the hopes that some basic functionality could be proven before spinning a real PCB.  Starting with the 8085 chip, functionality was tested as new components were added.
 
-### Step 1: Free-run Test
+A new build was recently completed to document each step of the process.  Schematics for each step were drawn in KiCad and are available in the repo.
+
+## Step 1: Free-run Test
 
 [![free run schematic](images/step1-free-run-sch-360.png)](images/step1-free-run-sch.png)[![free run build](images/step1-free-run-360.jpg)](images/step1-free-run.jpg)
 
@@ -24,9 +26,9 @@ The only parts needed for this are the 8085, clock crystal, and eight resistors 
 * connect _READY_ and _RESET_IN_ to _5V_
 * leave other signals unconnected, including _RD_, _WR_, _SOD_, and _ALE_
 
-### Step 2: ROM
+## Step 2: ROM
 
-[![rom led schematic](images/step2-rom-led-sch-360.png)](images/step2-rom-led-sch.png)[![rom led build](images/step2-rom-led-360.jpg)](images/step2-rom-led.jpg)
+[![rom led schematic](images/step2-rom-led-sch-360.png)](images/step2-rom-led-sch.png) [![rom led build](images/step2-rom-led-360.jpg)](images/step2-rom-led.jpg)
 
 The next test was to wire in the address/data latch and to connect the EEPROM.  An initial test program was loaded that blinks an LED from the SOD line.  The RESET button was also added at this point.
 
@@ -49,7 +51,7 @@ Burn the [ROM LED test program](code#test2a-rom-ledasm) into the EEPROM at start
 
 If the test above suceedes, basic ROM wiring has been verified.  A [second test program](code#test2b-rom-addressasm) can now be run to verify that all of the upper ROM address lines have been connected correctly.  It will flash the LED at different speeds for a successful test or do a continuous fast blink on failure.
 
-### Step 3: Serial Communications
+## Step 3: Serial Communications
 
 [![rom serial schematic](images/step3-rom-serial-sch-360.png)](images/step3-rom-serial-sch.png)[![rom serial build](images/step3-rom-serial-360.jpg)](images/step3-rom-serial.jpg)
 
@@ -59,7 +61,7 @@ The next test, with the same basic hardware, was to wire in the FTDI chip to the
 
 Note that this program uses timing loops that are dependent on the frequency of the clock crystal.  A different crystal would require different delay loop values.  The connected termnal should be set for 9600bps.
 
-### Step 4: RAM
+## Step 4: RAM
 
 [![ram serial schematic](images/step4-ram-serial-sch-360.png)](images/step4-ram-serial-sch.png)[![rom serial build](images/step4-ram-serial-360.jpg)](images/step4-ram-serial.jpg)
 
@@ -85,7 +87,7 @@ The [RAM serial test program](code#test2a-rom-ledasm) writes a continuous string
 
 Now that RAM is working, code development can be sped up with the use of the [Hex Loader](code#loaderasm). This can be burned into the ROM and will load and execute programs from RAM.  While not as powerful as a full monitor, it does remove the need to power down the system and remove the ROM for each code update.  It accepts Intel Hex files from [asm85](https://github.com/TomNisbet/asm85) or other tools that write in the standard format.
 
-### Step 5: Memory Addressing
+## Step 5: Memory Addressing / Build Complete
 
 [![rom serial build](images/step5-addressing-360.jpg)](images/step5-addressing.jpg)
 
