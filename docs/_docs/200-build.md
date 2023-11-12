@@ -89,7 +89,7 @@ Now that RAM is working, code development can be sped up with the use of the [He
 
 ## Step 5: Memory Addressing / Build Complete
 
-[![rom serial build](images/step5-addressing-360.jpg)](images/step5-addressing.jpg)
+[![rom serial build](images/step5-addressing-sch-360.png)](images/step5-addressing-sch.png)[![rom serial build](images/step5-addressing-360.jpg)](images/step5-addressing.jpg)
 
 At this point, the processor, ROM, and RAM had all been proven, at least for simple operations.  The address decoding and power-on jump logic were then added to swap the RAM and ROM starting addresses, making them compatible with the Explorer/85.
 
