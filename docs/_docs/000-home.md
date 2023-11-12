@@ -8,7 +8,7 @@ This is a design for a simple 8085-based single-board computer.  It was started 
 
 This project was inspired by the [Glitch Works 8085 SBC](http://www.glitchwrks.com/2011/10/29/sbc-rev-2) and the [Saundby MAG-85](http://saundby.com/electronics/8085/)
 
-![Simple 8085 Schematic](docs/images/simple8085-sch.png)
+![Simple 8085 Schematic](docs/images/step5-addressing-sch-800.png)
 
 
 ## Next Steps
