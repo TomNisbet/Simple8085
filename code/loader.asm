@@ -7,17 +7,21 @@
 ; will also work with the final Simple8085 addressing circuit if SYSROMST
 ; and SYSRAMST addresses are swapped.
 
+; Note that the loader uses the last 256 bytes of RAM for the stack and
+; local storage.  This must be moved if the loaded program will overwrite it.
+
 SYSROMST    equ     8000H
 SYSRAMST    equ     0000H
 
 STACK       equ     SYSRAMST + 07FFFH
+LDRAM       equ     SYSRAMST + 07FF0H
 
 ; Constants for serial communications at 9600 with a 6.144MHz crystal
 ; The connected terminal should be set for 9600,N,8,1
-BITTIME     equ     0113H           ; 6.144 time delay for a single bit
-HALFBIT     equ     010AH           ; 6.144 time after start bit detected to read the middle of a bit
-;BITTIME     equ     0112H           ; 6.000 time delay for a single bit
-;HALFBIT     equ     0109H           ; 6.000 time after start bit detected to read the middle of a bit
+BITTIME     equ     0113H           ; 6.144MHz time delay for a single bit
+HALFBIT     equ     010AH           ; 6.144MHz time after start bit detected to read the middle of a bit
+;BITTIME     equ     0112H           ; 6.000MHz time delay for a single bit
+;HALFBIT     equ     0109H           ; 6.000MHZ time after start bit detected to read the middle of a bit
 BITSOUT     equ     11              ; Serial bits to send (start, 8 data, 2 stop)
 BITSIN      equ     9               ; Serial bits to read + 1 (read 8 bits)
 
@@ -28,7 +32,7 @@ ESC         equ     01Bh
 
 
 ; RAM variables - This is not initialized, so the values here are meaningless
-            org     SYSRAMST
+            org     LDRAM
 EXADDR      dw      0               ; Execute address
 EXADFL      db      0               ; Execute address flag - nonzero if address provided
 
